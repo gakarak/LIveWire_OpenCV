@@ -23,8 +23,8 @@ void drawContour1(cv::Mat& img, const std::vector<cv::Point>& v) {
     }
 }
 
-void findNGBHPoint(const std::vector<cv::Point>& v, const cv::Point& p0, cv::Point& pNGBH) {
-    int     idxMin = 0;
+void findNGBHPoint(const std::vector<cv::Point>& v, const cv::Point& p0, cv::Point& pNGBH, int& idxMin) {
+    idxMin = 0;
     double  dstMin = DBL_MAX;
     double  dstTmp;
     for(int ii=0; ii<v.size(); ii++) {
@@ -39,6 +39,50 @@ void findNGBHPoint(const std::vector<cv::Point>& v, const cv::Point& p0, cv::Poi
     pNGBH = v[idxMin];
 }
 
+double calcL2(const cv::Point& p1, const cv::Point& p2) {
+    double dx = (double)p1.x - (double)p2.x;
+    double dy = (double)p1.y - (double)p2.y;
+    return sqrt(dx*dx + dy*dy);
+}
+
+void findPtsInContour(const std::vector<cv::Point>& v, const cv::Point& p0, int& idx, cv::Point& pf, bool isInc=true) {
+    int num     = v.size();
+    int num4    = num/4;
+    int idxNGBH;
+    cv::Point pNGBH;
+    findNGBHPoint(v, p0, pNGBH, idxNGBH);
+    int cnt = 0;
+    int di = +1;
+    if(!isInc) {
+        di = -1;
+    }
+    int cpos = idxNGBH;
+    int cold = cpos;
+    double dstC = 0.;
+    double dstA = 0.;
+    while (true) {
+        cpos += di;
+        if(cpos<0) {
+            cpos = num-1;
+        }
+        if(cpos>=num) {
+            cpos = 0;
+        }
+        dstC += calcL2(v[cpos], v[cold]);
+        dstA  = calcL2(v[cpos], v[idxNGBH]);
+        if(dstC>60) {
+            break;
+        }
+        cold = cpos;
+        cnt++;
+        if(cnt>num4) {
+            break;
+        }
+    }
+    idx = cpos;
+    pf  = v[idx];
+}
+
 void drawResults(bool isShowCircle=true) {
     cv::Mat tmp;
     imgc.copyTo(tmp);
@@ -47,9 +91,14 @@ void drawResults(bool isShowCircle=true) {
         cv::circle(tmp, pCenter, radC, cv::Scalar(255,0,0));
     }
     drawContour1(tmp, contour1);
-    cv::Point pNGBH;
-    findNGBHPoint(contour1, pCenter, pNGBH);
+    cv::Point pNGBH, pC1, pC2;
+    int idxNGBH, idxC1, idxC2;
+    findNGBHPoint(contour1, pCenter, pNGBH, idxNGBH);
+    findPtsInContour(contour1, pCenter, idxC1, pC1, true);
+    findPtsInContour(contour1, pCenter, idxC2, pC2, false);
     cv::circle(tmp, pNGBH, 3, cv::Scalar(0,0,255));
+    cv::circle(tmp, pC1, 3, cv::Scalar(255,0,0));
+    cv::circle(tmp, pC2, 3, cv::Scalar(255,100,0));
     cv::imshow("win", tmp);
 }
 
@@ -98,7 +147,7 @@ int main(int argc, char* argv[]) {
     cv::imshow("win", imgc);
     cv::setMouseCallback("win", onMouse, 0);
     while(true) {
-        int key = cv::waitKey(0);
+        char key = cv::waitKey(0);
         if(key==27) {
             break;
         }
