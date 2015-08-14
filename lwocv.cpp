@@ -223,7 +223,7 @@ void calcLiveWireGetPath(const cv::Mat &ipx, const cv::Mat &ipy, cv::Point pxy, 
 
 
 cv::Point calcIdealAnchor(const cv::Mat &imgS, cv::Point pxy, int rad) {
-    std::cout << "FUCK" << std::endl;
+//    std::cout << "FUCK" << std::endl;
     int nc = imgS.cols;
     int nr = imgS.rows;
     int r0 = pxy.y;
@@ -286,7 +286,7 @@ void OCVLiveWire::initParams() {
     isLoaded    = false;
     isStartPath = false;
     parRadiusA  = 4;
-    parRadiusP  = 200;
+    parRadiusP  = 120;
     parRadiusPath   = 300;
 }
 

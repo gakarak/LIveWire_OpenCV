@@ -3,7 +3,7 @@
 
 OCVLiveWire lw;
 cv::Mat img, imgc, markersT;
-cv::Point pCenter;
+cv::Point pCenter, pCL, pCR, pNGBH;
 bool isDrawCircle;
 int radC;
 std::vector<cv::Point> contour1;
@@ -107,9 +107,14 @@ static void onMouse( int event, int x, int y, int flags, void* )
 
     bool isKeyShift = (flags&CV_EVENT_FLAG_SHIFTKEY);
     bool isKeyCtrl  = (flags&CV_EVENT_FLAG_CTRLKEY);
+    bool isKeyMLB    = (flags&CV_EVENT_FLAG_LBUTTON);
+    bool isKeyMRB    = (flags&CV_EVENT_FLAG_RBUTTON);
 
     if(event==CV_EVENT_LBUTTONDOWN) {
-        std::cout << "(" << x << ", " << y << ")" << std::endl;
+
+    }
+    if(isKeyMLB) {
+//        std::cout << "(" << x << ", " << y << ")" << std::endl;
         pCenter = cv::Point(x,y);
         isDrawCircle = true;
     } else {

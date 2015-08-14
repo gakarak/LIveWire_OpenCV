@@ -15,7 +15,7 @@ set( PROJECT_NAME "LiveWireOCV" )
 project ( ${PROJECT_NAME} )
 
 ###############################################
-set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE)
 #    set(CMAKE_BUILD_TYPE "Release")
     set(CMAKE_BUILD_TYPE "Debug")
@@ -33,6 +33,7 @@ message("build prefix=[${BUILD_PREFIX}]")
 set( TARGET_1     "LiveWire_OCV_Test"           )
 set( TARGET_2     "LiveWire_OCV_Test2"          )
 set( TARGET_3     "LiveWire_OCV_DragContour"    )
+set( TARGET_4     "LiveWire_OCV_DragContour2"   )
 
 ###############################################
 find_package( OpenCV REQUIRED )
@@ -56,6 +57,9 @@ target_link_libraries("${TARGET_2}_${BUILD_PREFIX}" ${LIB_LWOCV} ${OpenCV_LIBS})
 
 add_executable("${TARGET_3}_${BUILD_PREFIX}" "${TARGET_3}.cpp")
 target_link_libraries("${TARGET_3}_${BUILD_PREFIX}" ${LIB_LWOCV} ${OpenCV_LIBS})
+
+add_executable("${TARGET_4}_${BUILD_PREFIX}" "${TARGET_4}.cpp")
+target_link_libraries("${TARGET_4}_${BUILD_PREFIX}" ${LIB_LWOCV} ${OpenCV_LIBS})
 
 ##get_cmake_property(_variableNames VARIABLES)
 ##foreach (_variableName ${_variableNames})
