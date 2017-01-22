@@ -239,7 +239,8 @@ int main(int argc, char* argv[]) {
 
 //    imgs = cv::imread("/home/ar/img/lena.png",CV_LOAD_IMAGE_COLOR);
 //    imgs = cv::imread("/home/ar/img/doge2.jpg",CV_LOAD_IMAGE_COLOR);
-    imgs = cv::imread("/home/ar/img/example_gomel_pole_1.png",CV_LOAD_IMAGE_COLOR);
+//    imgs = cv::imread("/home/ar/img/example_gomel_pole_1.png",CV_LOAD_IMAGE_COLOR);
+    imgs = cv::imread("/home/ar/img/lena.png",CV_LOAD_IMAGE_COLOR);
     lw1.loadImage(imgs);
     lw2.loadImage(imgs);
 
